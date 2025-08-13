@@ -32,7 +32,7 @@ normalized_longitude = (longitude - MIN_LONGITUDE) / LONGITUDE_RANGE * 2^26
 ```
 
 > [!NOTE]
-> Latitude varies from -85.05112878 to 85.05112878 and not -90 to 90. This is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) used to project the Earth onto a 2D plane.
+> The latitude range Redis accepts is +/-85.05112878 and not +/-90. This is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) used to project the Earth onto a 2D plane.
 
 These intermediate values are combined in the next steps to calculate a "score".
 
