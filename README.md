@@ -108,7 +108,7 @@ Decoding essentially does the reverse of encoding.
 
 # FAQ
 
-### Why is the latitude range from -85.05112878 to 85.05112878 and not -90 to 90?
+### Why is the latitude range from -85.05° to 85.05° and not -90° to 90°?
 
 This is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) used to project the Earth onto a 2D plane.
 
