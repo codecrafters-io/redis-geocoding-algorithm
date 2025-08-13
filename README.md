@@ -102,7 +102,7 @@ score = interleave(normalized_latitude, normalized_longitude)
 
 # Decoding
 
-Decoding a score converts it back to the original latitude and longitude values (with some loss of precision).
+Decoding a score converts it back to the original latitude and longitude values.
 
 **TODO**: Add decoding pseudocode
 
