@@ -34,11 +34,11 @@ normalized_longitude = 2^26 * (longitude - MIN_LONGITUDE) / LONGITUDE_RANGE
 > [!NOTE]
 > The latitude range Redis accepts is +/-85.05° and not +/-90°. This is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) used to project the Earth onto a 2D plane.
 
-These intermediate values are combined in the next steps to calculate a "score".
+These normalized values are combined in the next steps to calculate a "score".
 
 ## Step 2: Truncation
 
-The normalized values (floats) are truncated to integers (i.e. the decimal part is dropped).
+The normalized values (floats) are truncated to integers. This is not rounding, the decimal part is dropped entirely.
 
 In the Redis source code, this conversion happens implicitly when the `double` values are casted to `uint32_t` [here](https://github.com/redis/redis/blob/ff2f0b092c24d5cc590ff1eb596fc0865e0fb721/src/geohash.c#L149).
 
