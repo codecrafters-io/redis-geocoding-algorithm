@@ -7,7 +7,7 @@ LATITUDE_RANGE = MAX_LATITUDE - MIN_LATITUDE
 LONGITUDE_RANGE = MAX_LONGITUDE - MIN_LONGITUDE
 
 
-def encode(latitude: float, longitude: float) -> float:
+def encode(latitude: float, longitude: float) -> int:
     # Normalize to the range 0-2^26
     normalized_latitude = 2**26 * (latitude - MIN_LATITUDE) / LATITUDE_RANGE
     normalized_longitude = 2**26 * (longitude - MIN_LONGITUDE) / LONGITUDE_RANGE
@@ -16,7 +16,7 @@ def encode(latitude: float, longitude: float) -> float:
     normalized_latitude = int(normalized_latitude)
     normalized_longitude = int(normalized_longitude)
 
-    return float(interleave(normalized_latitude, normalized_longitude))
+    return interleave(normalized_latitude, normalized_longitude)
 
 
 def interleave(x: int, y: int) -> int:
