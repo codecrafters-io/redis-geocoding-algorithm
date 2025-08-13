@@ -27,8 +27,8 @@ MAX_LONGITUDE = 180
 LATITUDE_RANGE = MAX_LATITUDE - MIN_LATITUDE
 LONGITUDE_RANGE = MAX_LONGITUDE - MIN_LONGITUDE
 
-normalized_latitude = (latitude - MIN_LATITUDE) / LATITUDE_RANGE * 2^26
-normalized_longitude = (longitude - MIN_LONGITUDE) / LONGITUDE_RANGE * 2^26
+normalized_latitude = 2^26 * (latitude - MIN_LATITUDE) / LATITUDE_RANGE
+normalized_longitude = 2^26 * (longitude - MIN_LONGITUDE) / LONGITUDE_RANGE
 ```
 
 > [!NOTE]
