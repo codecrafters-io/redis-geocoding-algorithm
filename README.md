@@ -108,15 +108,15 @@ Decoding essentially does the reverse of encoding.
 
 # FAQ
 
-#### Why is the latitude range from -85.05112878 to 85.05112878 and not -90 to 90?
+### Why is the latitude range from -85.05112878 to 85.05112878 and not -90 to 90?
 
 This is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) used to project the Earth onto a 2D plane.
 
-#### Why are the latitude and longitude normalized to 26-bit integers instead of 32-bit integers?
+### Why are the latitude and longitude normalized to 26-bit integers instead of 32-bit integers?
 
 In [sorted sets](https://redis.io/docs/latest/data-types/sorted-sets/), scores are stored as [float64](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) numbers. Float64 values have limits on integer precision. They [can represent integers upto 2^53 accurately](https://en.wikipedia.org/wiki/Double-precision_floating-point_format#Precision_limitations_on_integer_values) but start to lose precision after that. Using 26-bit integers ensures that the final score is under 2^52 and thus within the integer precision limits of float64.
 
-#### How do I test my implementation?
+### How do I test my implementation?
 
 Here are some example values to test your implementation against:
 
