@@ -75,7 +75,7 @@ if __name__ == "__main__":
         lat_diff = abs(decoded_latitude - test_case["latitude"])
         lon_diff = abs(decoded_longitude - test_case["longitude"])
         
-        success = lat_diff < 10e-6 and lon_diff < 10e-6
+        success = lat_diff < 1e-6 and lon_diff < 1e-6
         print(f"{test_case['name']}: (lat={decoded_latitude},lon={decoded_longitude}) {"✅" if (success) else "❌"}")
         if not success:
             print(f"  Expected: lat={test_case.latitude}, lon={test_case.longitude}")
