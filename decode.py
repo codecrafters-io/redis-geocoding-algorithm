@@ -18,17 +18,7 @@ def decode(geo_code: int) -> (float, float):
     grid_latitude_number = compact_int64_to_int32(x)
     grid_longitude_number = compact_int64_to_int32(y)
     
-    # Calculate the grid boundaries
-    grid_latitude_min = MIN_LATITUDE + LATITUDE_RANGE * (grid_latitude_number / (2**26))
-    grid_latitude_max = MIN_LATITUDE + LATITUDE_RANGE * ((grid_latitude_number + 1) / (2**26))
-    grid_longitude_min = MIN_LONGITUDE + LONGITUDE_RANGE * (grid_longitude_number / (2**26))
-    grid_longitude_max = MIN_LONGITUDE + LONGITUDE_RANGE * ((grid_longitude_number + 1) / (2**26))
-    
-    # Calculate the center point of the grid cell
-    latitude = (grid_latitude_min + grid_latitude_max) / 2
-    longitude = (grid_longitude_min + grid_longitude_max) / 2
-    
-    return (latitude, longitude)
+    return convert_grid_numbers_to_coordinates(grid_latitude_number, grid_longitude_number)
 
 
 def compact_int64_to_int32(v: int) -> int:
@@ -43,6 +33,19 @@ def compact_int64_to_int32(v: int) -> int:
     v = (v | (v >> 8)) & 0x0000FFFF0000FFFF
     v = (v | (v >> 16)) & 0x00000000FFFFFFFF
     return v
+
+
+def convert_grid_numbers_to_coordinates(grid_latitude_number, grid_longitude_number) -> (float, float):
+    # Calculate the grid boundaries
+    grid_latitude_min = MIN_LATITUDE + LATITUDE_RANGE * (grid_latitude_number / (2**26))
+    grid_latitude_max = MIN_LATITUDE + LATITUDE_RANGE * ((grid_latitude_number + 1) / (2**26))
+    grid_longitude_min = MIN_LONGITUDE + LONGITUDE_RANGE * (grid_longitude_number / (2**26))
+    grid_longitude_max = MIN_LONGITUDE + LONGITUDE_RANGE * ((grid_longitude_number + 1) / (2**26))
+    
+    # Calculate the center point of the grid cell
+    latitude = (grid_latitude_min + grid_latitude_max) / 2
+    longitude = (grid_longitude_min + grid_longitude_max) / 2
+    return (latitude, longitude)
 
 
 if __name__ == "__main__":

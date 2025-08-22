@@ -155,20 +155,20 @@ def compact_int64_to_int32(v: int) -> int:
 
 ## Step 3: Converting Back to Geographic Coordinates
 
-The decoded 32-bit integers represent grid cell numbers. We convert them back to geographic coordinates by reversing the normalization process.
+The decoded 32-bit integers represent grid cell numbers. We convert them back to geographic coordinates by reversing the normalization process. Here's a pseudocode illustrating this process.
 
 ```python
-# Calculate the grid boundaries for latitude
-grid_latitude_min = MIN_LATITUDE + LATITUDE_RANGE * (grid_latitude_number / (2**26))
-grid_latitude_max = MIN_LATITUDE + LATITUDE_RANGE * ((grid_latitude_number + 1) / (2**26))
-
-# Calculate the grid boundaries for longitude
-grid_longitude_min = MIN_LONGITUDE + LONGITUDE_RANGE * (grid_longitude_number / (2**26))
-grid_longitude_max = MIN_LONGITUDE + LONGITUDE_RANGE * ((grid_longitude_number + 1) / (2**26))
-
-# Calculate the center point of the grid cell for improved precision
-latitude = (grid_latitude_min + grid_latitude_max) / 2
-longitude = (grid_longitude_min + grid_longitude_max) / 2
+def convert_grid_numbers_to_coordinates(grid_latitude_number, grid_longitude_number) -> (float, float):
+    # Calculate the grid boundaries
+    grid_latitude_min = MIN_LATITUDE + LATITUDE_RANGE * (grid_latitude_number / (2**26))
+    grid_latitude_max = MIN_LATITUDE + LATITUDE_RANGE * ((grid_latitude_number + 1) / (2**26))
+    grid_longitude_min = MIN_LONGITUDE + LONGITUDE_RANGE * (grid_longitude_number / (2**26))
+    grid_longitude_max = MIN_LONGITUDE + LONGITUDE_RANGE * ((grid_longitude_number + 1) / (2**26))
+    
+    # Calculate the center point of the grid cell
+    latitude = (grid_latitude_min + grid_latitude_max) / 2
+    longitude = (grid_longitude_min + grid_longitude_max) / 2
+    return (latitude, longitude)
 ```
 
 > [!NOTE]
