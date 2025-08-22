@@ -46,7 +46,8 @@ def compact_int64_to_int32(v: int) -> int:
 
 
 if __name__ == "__main__":
-    # Test cases from encode.py to verify round-trip encoding/decoding
+    # Test cases from encode.py to verify decoding
+    # The latitude and longitude in test cases are the actual responses from redis server
     test_cases = [
         {"name": "Bangkok", "latitude": 13.722000686932997, "longitude": 100.52520006895065, "score": 3962257306574459},
         {"name": "Beijing", "latitude": 39.9075003315814, "longitude": 116.39719873666763, "score": 4069885364908765},

@@ -102,9 +102,77 @@ score = interleave(normalized_latitude, normalized_longitude)
 
 # Decoding
 
-Decoding a score converts it back to the original latitude and longitude values.
+Decoding a score converts it back to the original latitude and longitude values. This is essentially the reverse of the encoding process.
 
-**TODO**: Add decoding pseudocode
+## Step 1: Separating the Interleaved Bits
+
+First, we need to separate the interleaved latitude and longitude bits from the score. Since longitude bits were shifted left by 1 during encoding, we need to shift them back.
+
+```python
+# Extract longitude bits (they were shifted left by 1 during encoding)
+y = geo_code >> 1
+
+# Extract latitude bits (they were in the original positions)
+x = geo_code
+```
+
+## Step 2: Compacting 64-bit integer to 32-bit integers
+
+The bits were spread from 32-bit to 64-bit integers during encoding. Now we need to compact them back to 32-bit integers.
+
+```python
+# Compact both latitude and longitude back to 32-bit integers
+grid_latitude_number = compact_int64_to_int32(x)
+grid_longitude_number = compact_int64_to_int32(y)
+```
+
+Here's a pseudocode illustrating how int64 is compacted to int32.
+```python
+def compact_int64_to_int32(v: int) -> int:
+    # Keep only the bits in even positions
+    v = v & 0x5555555555555555
+
+    # Before masking: w1   v1  ...   w2   v16  ... w31  v31  w32  v32
+    # After masking: 0   v1  ...   0   v16  ... 0  v31  0  v32
+
+    # Where w1, w2,..w31 are the digits from longitude if we're compacting latitude, or digits from latitude if we're compacting longitude
+    # So, we mask them out and only keep the relevant bits that we wish to compact
+
+    # ------
+    # Reverse the spreading process by shifting and masking
+    v = (v | (v >> 1)) & 0x3333333333333333
+    v = (v | (v >> 2)) & 0x0F0F0F0F0F0F0F0F
+    v = (v | (v >> 4)) & 0x00FF00FF00FF00FF
+    v = (v | (v >> 8)) & 0x0000FFFF0000FFFF
+    v = (v | (v >> 16)) & 0x00000000FFFFFFFF
+
+    # Before compacting: 0   v1  ...   0   v16  ... 0  v31  0  v32
+    # After compacting: v1  v2  ...  v31  v32
+    # -----
+    
+    return v
+```
+
+## Step 3: Converting Back to Geographic Coordinates
+
+The decoded 32-bit integers represent grid cell numbers. We convert them back to geographic coordinates by reversing the normalization process.
+
+```python
+# Calculate the grid boundaries for latitude
+grid_latitude_min = MIN_LATITUDE + LATITUDE_RANGE * (grid_latitude_number / (2**26))
+grid_latitude_max = MIN_LATITUDE + LATITUDE_RANGE * ((grid_latitude_number + 1) / (2**26))
+
+# Calculate the grid boundaries for longitude
+grid_longitude_min = MIN_LONGITUDE + LONGITUDE_RANGE * (grid_longitude_number / (2**26))
+grid_longitude_max = MIN_LONGITUDE + LONGITUDE_RANGE * ((grid_longitude_number + 1) / (2**26))
+
+# Calculate the center point of the grid cell for improved precision
+latitude = (grid_latitude_min + grid_latitude_max) / 2
+longitude = (grid_longitude_min + grid_longitude_max) / 2
+```
+
+> [!NOTE]
+> The decoded coordinates represent the center of a grid cell, not the exact original coordinates. This is because the encoding process truncates coordinates to grid cells. The precision depends on the grid resolution (which is determined by the 26-bit normalization).
 
 # FAQ
 
